@@ -64,7 +64,7 @@ function badgeColor(pct) {
 
 function updateBadge(raw) {
   const limits = parseLimits(raw);
-  const weekly = limits.find(l => l.key === 'weekly_all');
+  const weekly = limits.find(l => l.key === 'seven_day');
   if (weekly) {
     const pct = Math.round(weekly.pct);
     chrome.action.setBadgeText({ text: `${pct}%` });
