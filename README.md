@@ -4,6 +4,10 @@ A Chrome extension that shows your Claude plan usage limits at a glance.
 
 ![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-blue)
 
+| Popup + Badge | Overlay on claude.ai |
+|:---:|:---:|
+| ![Popup](extension.png) | ![Overlay](claudeaioverlay.png) |
+
 ## Features
 
 - **Toolbar badge** — shows weekly usage percentage, color-coded (green → yellow → orange → red)
