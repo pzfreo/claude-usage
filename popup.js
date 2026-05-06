@@ -106,3 +106,53 @@ async function render() {
 }
 
 render();
+
+// Settings link
+document.getElementById('settingsLink').addEventListener('click', () => {
+  chrome.runtime.openOptionsPage();
+});
+
+// Sync button — show only if sync is configured
+chrome.storage.local.get(['syncUrl', 'syncToken'], ({ syncUrl, syncToken }) => {
+  if (!syncUrl || !syncToken) return;
+  document.getElementById('sync-row').style.display = 'flex';
+
+  document.getElementById('syncBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('syncBtn');
+    const status = document.getElementById('syncStatus');
+    btn.disabled = true;
+    btn.textContent = '…';
+    status.textContent = '';
+
+    try {
+      const [sessionCookie, orgCookie] = await Promise.all([
+        chrome.cookies.get({ url: 'https://claude.ai', name: 'sessionKey' }),
+        chrome.cookies.get({ url: 'https://claude.ai', name: 'lastActiveOrg' }),
+      ]);
+      if (!sessionCookie?.value || !orgCookie?.value) {
+        throw new Error('Not logged in to claude.ai');
+      }
+
+      const res = await fetch(syncUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${syncToken}`,
+        },
+        body: JSON.stringify({
+          session_key: sessionCookie.value,
+          org_id: orgCookie.value,
+        }),
+      });
+      if (!res.ok) throw new Error(`Server returned ${res.status}`);
+      status.style.color = '#22aa44';
+      status.textContent = 'Synced ✓';
+    } catch (e) {
+      status.style.color = '#cc4444';
+      status.textContent = e.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⇧ Sync to bot';
+    }
+  });
+});
