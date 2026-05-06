@@ -108,11 +108,44 @@
       margin-top: 8px;
     }
     .raw-link:hover { color: #666; }
+
+    .sync-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    #syncBtn {
+      font-size: 11px;
+      color: #5599dd;
+      background: none;
+      border: 1px solid #2a4466;
+      border-radius: 4px;
+      padding: 3px 8px;
+      cursor: pointer;
+    }
+    #syncBtn:hover { color: #88bbff; border-color: #4477aa; }
+    #syncBtn:disabled { color: #444; border-color: #333; cursor: default; }
+    #syncStatus { font-size: 11px; color: #555; }
+    .settings-link {
+      font-size: 11px;
+      color: #444;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .settings-link:hover { color: #666; }
   </style>
 </head>
 <body>
   <h1>Claude Usage</h1>
   <div id="content"></div>
+  <div id="sync-row" class="sync-row" style="display:none">
+    <span id="syncStatus"></span>
+    <button id="syncBtn">⇧ Sync to bot</button>
+  </div>
+  <div style="text-align:right;margin-top:6px">
+    <a class="settings-link" id="settingsLink">⚙ Settings</a>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
